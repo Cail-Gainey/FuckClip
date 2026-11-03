@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Material 3 浅色配色，种子色沿用模块原来的品牌绿 #008577。
+  Android 12 及以上的机器会被 DynamicColors 的莫奈取色覆盖，这里是低版本的回落配色。
+
+  Material 3 light palette seeded from the original brand teal #008577.
+  Overridden by DynamicColors on Android 12+; this is the fallback for older versions.
+-->
+<resources>
+    <color name="m3_primary">#FF006A60</color>
+    <color name="m3_on_primary">#FFFFFFFF</color>
+    <color name="m3_primary_container">#FF74F8E5</color>
+    <color name="m3_on_primary_container">#FF00201C</color>
+    <color name="m3_primary_inverse">#FF53DBC9</color>
+
+    <color name="m3_secondary">#FF4A635F</color>
+    <color name="m3_on_secondary">#FFFFFFFF</color>
+    <color name="m3_secondary_container">#FFCCE8E2</color>
+    <color name="m3_on_secondary_container">#FF051F1C</color>
+
+    <color name="m3_tertiary">#FF4B607C</color>
+    <color name="m3_on_tertiary">#FFFFFFFF</color>
+    <color name="m3_tertiary_container">#FFD3E5FF</color>
+    <color name="m3_on_tertiary_container">#FF041C35</color>
+
+    <color name="m3_error">#FFBA1A1A</color>
+    <color name="m3_on_error">#FFFFFFFF</color>
+    <color name="m3_error_container">#FFFFDAD6</color>
+    <color name="m3_on_error_container">#FF410002</color>
+
+    <color name="m3_background">#FFF5FAF8</color>
+    <color name="m3_on_background">#FF171D1B</color>
+    <color name="m3_surface">#FFF5FAF8</color>
+    <color name="m3_on_surface">#FF171D1B</color>
+    <color name="m3_surface_variant">#FFDAE5E1</color>
+    <color name="m3_on_surface_variant">#FF3F4947</color>
+    <color name="m3_surface_inverse">#FF2C3230</color>
+    <color name="m3_on_surface_inverse">#FFEBF1EE</color>
+    <color name="m3_outline">#FF6F7977</color>
+    <color name="m3_outline_variant">#FFBEC9C6</color>
+    <color name="m3_surface_dim">#FFD5DBD9</color>
+    <color name="m3_surface_bright">#FFF5FAF8</color>
+    <color name="m3_surface_container_lowest">#FFFFFFFF</color>
+    <color name="m3_surface_container_low">#FFEFF5F2</color>
+    <color name="m3_surface_container">#FFE9EFEC</color>
+    <color name="m3_surface_container_high">#FFE4EAE7</color>
+    <color name="m3_surface_container_highest">#FFDEE4E1</color>
+</resources>

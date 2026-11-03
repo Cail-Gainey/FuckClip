@@ -1,0 +1,46 @@
+<resources>
+    <string name="ui_unknown">Unknown</string>
+    <string name="ui_loading">…</string>
+    <string name="ui_count_unavailable">-</string>
+    <string name="ui_android_version">Android %1$s (API %2$d)</string>
+    <string name="ui_copied_label">Copied %1$s</string>
+    <string name="ui_copied_to_clipboard">Copied to clipboard</string>
+    <string name="ui_copy">Copy</string>
+    <string name="ui_close">Close</string>
+
+    <string name="ui_action_allowed">Allowed</string>
+    <string name="ui_action_denied">Denied</string>
+    <string name="ui_action_unknown">Unknown action</string>
+    <string name="ui_record_title">Access record</string>
+    <plurals name="ui_record_preview_truncated">
+        <item quantity="one">…\n\n(Content is too long. Only the first %1$s character is shown. Tap Copy to copy the full text.)</item>
+        <item quantity="other">…\n\n(Content is too long. Only the first %1$s characters are shown. Tap Copy to copy the full text.)</item>
+    </plurals>
+
+    <string name="ui_rule_ask">Ask</string>
+    <string name="ui_rule_default">Default</string>
+    <string name="ui_rule_allow">Allow</string>
+    <string name="ui_rule_deny">Deny</string>
+    <plurals name="ui_apps_including_system">
+        <item quantity="one">Including system components · %1$s app in total</item>
+        <item quantity="other">Including system components · %1$s apps in total</item>
+    </plurals>
+    <plurals name="ui_apps_third_party_only">
+        <item quantity="one">Third-party apps only · %1$s app in total</item>
+        <item quantity="other">Third-party apps only · %1$s apps in total</item>
+    </plurals>
+
+    <string name="ui_version_badge">v%1$s (%2$d)</string>
+    <string name="ui_browser_open_failed">Could not open the web page: %1$s</string>
+    <string name="ui_license_view_full">View full license</string>
+    <string name="ui_license_summary">FuckClip is licensed under the MIT License.\n\nCopyright (c) 2019 nlifew\nCopyright (c) 2026 Cail-Gainey\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files, to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software.</string>
+
+    <!-- 规则徽章与编辑对话框：徽章是「方向 · 规则」。Rule badges and editor: a badge reads "direction · rule". -->
+    <string name="ui_rule_write">Write</string>
+    <string name="ui_rule_read">Read</string>
+    <string name="ui_rule_badge" translatable="false">%1$s · %2$s</string>
+    <string name="ui_log_count_badge" translatable="false">×%1$d</string>
+    <string name="ui_rule_section_write">Writing to the clipboard</string>
+    <string name="ui_rule_section_read">Reading the clipboard</string>
+    <string name="ui_rule_read_hint">A denied app sees an empty clipboard. When asked, that read is blocked too and only a remembered choice changes the rule.</string>
+</resources>

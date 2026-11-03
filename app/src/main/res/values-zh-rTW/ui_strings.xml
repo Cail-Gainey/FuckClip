@@ -1,0 +1,40 @@
+<resources>
+    <string name="ui_unknown">未知</string>
+    <string name="ui_loading">…</string>
+    <string name="ui_count_unavailable">-</string>
+    <string name="ui_android_version">Android %1$s (API %2$d)</string>
+    <string name="ui_copied_label">已複製%1$s</string>
+    <string name="ui_copied_to_clipboard">已複製到剪貼簿</string>
+    <string name="ui_copy">複製</string>
+    <string name="ui_close">關閉</string>
+
+    <string name="ui_action_allowed">已允許</string>
+    <string name="ui_action_denied">已拒絕</string>
+    <string name="ui_action_unknown">未知操作</string>
+    <string name="ui_record_title">存取紀錄</string>
+    <plurals name="ui_record_preview_truncated">
+        <item quantity="other">…\n\n（內容過長，僅預覽前 %1$s 個字元，點擊「複製」可複製全文）</item>
+    </plurals>
+
+    <string name="ui_rule_ask">詢問</string>
+    <string name="ui_rule_default">預設</string>
+    <string name="ui_rule_allow">允許</string>
+    <string name="ui_rule_deny">拒絕</string>
+    <plurals name="ui_apps_including_system">
+        <item quantity="other">包含系統元件 · 共 %1$s 個應用程式</item>
+    </plurals>
+    <plurals name="ui_apps_third_party_only">
+        <item quantity="other">僅第三方應用程式 · 共 %1$s 個應用程式</item>
+    </plurals>
+
+    <string name="ui_version_badge">v%1$s (%2$d)</string>
+    <string name="ui_browser_open_failed">無法開啟網頁：%1$s</string>
+    <string name="ui_license_view_full">檢視完整協議</string>
+    <string name="ui_license_summary">FuckClip 基於 MIT 授權條款授權。\n\nCopyright (c) 2019 nlifew\nCopyright (c) 2026 Cail-Gainey\n\n特此免費授予任何獲得本軟體及相關文件副本的人不受限制地處理本軟體的權利，包括但不限於使用、複製、修改、合併、發布、散布、再授權和／或販售本軟體副本的權利。</string>
+
+    <string name="ui_rule_write">寫入</string>
+    <string name="ui_rule_read">讀取</string>
+    <string name="ui_rule_section_write">寫入剪貼簿</string>
+    <string name="ui_rule_section_read">讀取剪貼簿</string>
+    <string name="ui_rule_read_hint">被拒絕的應用程式只會讀到空剪貼簿；詢問時本次讀取同樣會被攔下，只有勾選「記住此選擇」才會變更規則。</string>
+</resources>

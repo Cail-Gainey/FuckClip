@@ -1,0 +1,184 @@
+<resources>
+
+    <string name="xposed_module_description">
+        別動我的剪貼板啊！！！
+    </string>
+
+    <string name="options_search">搜尋</string>
+    <string name="options_show_system">顯示系統應用程式</string>
+    <string name="options_clear_history">清除歷史紀錄</string>
+    <string name="options_about">關於</string>
+
+    <string name="title_home">首頁</string>
+    <string name="title_app">應用程式</string>
+    <string name="title_history">使用紀錄</string>
+    <string name="title_settings">設定</string>
+
+    <string name="dashboard_status_active">防護生效中</string>
+    <string name="dashboard_status_pill">● 正常運作</string>
+    <string name="dashboard_status_desc">即時代理系統 IClipboard 介面 · 杜絕未授權讀寫剪貼簿</string>
+    <string name="dashboard_stat_rules">規則設定</string>
+    <string name="dashboard_stat_denied">已攔截</string>
+    <string name="dashboard_stat_granted">已放行</string>
+    <string name="dashboard_section_quick">快速控制</string>
+    <string name="dashboard_section_device">裝置資訊</string>
+    <string name="dashboard_device_model">裝置型號</string>
+    <string name="dashboard_device_android">系統版本</string>
+    <string name="dashboard_device_kernel">核心資訊</string>
+    <string name="dashboard_device_abi">架構指令集</string>
+    <string name="dashboard_device_build">建置版本</string>
+
+    <string name="home_rogue_throttle_title">限制頻繁讀取</string>
+    <string name="home_rogue_throttle_subtitle">針對惡意應用程式的高頻狂讀與彈窗轟炸進行智慧限流截斷</string>
+    <string name="home_rogue_throttle_status">冷卻: %1$d秒 · 容忍: %2$d次 · 閾值: %3$d次/3秒</string>
+    <string name="home_rogue_throttle_config_title">頻繁讀取限制設定</string>
+    <string name="home_rogue_throttle_cooldown_label">拒絕靜默冷卻</string>
+    <string name="home_rogue_throttle_cooldown_desc">單次拒絕或關閉彈窗後在此時間內靜默攔截，不再重複彈窗打擾</string>
+    <string name="home_rogue_throttle_grant_burst_label">允許快速連讀窗口</string>
+    <string name="home_rogue_throttle_grant_burst_desc">單次允許後在此時間內快速放行連續讀取，避免連續彈窗</string>
+    <string name="home_rogue_throttle_frequency_label">高頻讀取限流閾值</string>
+    <string name="home_rogue_throttle_frequency_desc">3 秒內讀取超過此頻率時自動觸發限流截斷，防止死循環狂讀</string>
+    <string name="home_rogue_throttle_seconds">%1$d 秒</string>
+    <string name="home_rogue_throttle_times">%1$d 次 / 3秒</string>
+    <string name="home_rogue_throttle_tolerance_label">短時間內讀取次數上限</string>
+    <string name="home_rogue_throttle_tolerance_desc">單一應用程式在短時間內連續讀取達此次數後才開始靜默限流，避免正常應用程式被過早截斷</string>
+    <string name="home_rogue_throttle_tolerance_times">%1$d 次</string>
+
+    <string name="settings_section_appearance">外觀與偏好</string>
+    <string name="settings_section_protection">防護與限制</string>
+    <string name="settings_master_switch">剪貼簿防護總開關</string>
+    <string name="settings_master_switch_summary">攔截未授權的剪貼簿讀取與寫入操作</string>
+    <string name="settings_section_list">應用程式清單</string>
+    <string name="settings_show_system_summary">開啟後，系統應用程式也會出現在「應用程式」清單中</string>
+    <string name="settings_section_service">背景</string>
+    <string name="settings_keep_alive">背景常駐</string>
+    <string name="settings_keep_alive_summary">常駐一個通知讓模組處理程序保持運作，掛鉤讀取規則更快。關閉即完全停止，背景不留服務與通知；防護功能照常運作，僅在應用程式被清除後初次存取時稍慢</string>
+
+    <string name="settings_section_data">資料</string>
+    <string name="settings_export_rules">匯出規則備份</string>
+    <string name="settings_export_rules_summary">將已設定的應用程式規則匯出為標準 JSON 檔案</string>
+    <string name="settings_import_rules">匯入規則</string>
+    <string name="settings_import_rules_summary">從 JSON 備份檔案還原規則並立即熱同步生效</string>
+    <string name="settings_export_rules_success">規則備份已成功匯出</string>
+    <string name="settings_export_rules_failed">匯出規則備份失敗</string>
+    <string name="settings_clear_history_summary">清空「使用紀錄」中的所有項目，此操作無法復原</string>
+    <string name="settings_clear_history_confirm">確定要清空所有使用紀錄嗎？</string>
+    <string name="settings_version">版本 %1$s (%2$d)</string>
+
+    <string name="title_theme">主題</string>
+    <string name="theme_mode">主題模式</string>
+    <string name="theme_mode_system">跟隨系統</string>
+    <string name="theme_mode_light">淺色模式</string>
+    <string name="theme_mode_dark">深色模式</string>
+    <string name="theme_mode_amoled">純黑深色</string>
+    <string name="theme_preview">主題預覽</string>
+    <string name="theme_preview_sample_card">範例卡片</string>
+    <string name="theme_preview_sample_button">範例按鈕</string>
+    <string name="theme_section_color">配色</string>
+    <string name="theme_monet">Monet 取色</string>
+    <string name="theme_monet_summary">跟隨桌布取色，需要 Android 12 或更高版本</string>
+    <string name="theme_monet_hint">Monet 取色開啟時，下方的主題色、色彩風格與色彩標準皆不生效</string>
+    <string name="theme_palette">多主題</string>
+    <string name="theme_style">色彩風格</string>
+    <string name="theme_spec">色彩標準</string>
+    <string name="theme_section_nav">底欄</string>
+    <string name="theme_floating_nav">啟用懸浮底欄</string>
+    <string name="theme_floating_nav_summary">圓角懸浮、僅保留圖示</string>
+    <string name="theme_value">%1$s：%2$s</string>
+
+    <string name="theme_seed_teal">青綠（預設）</string>
+    <string name="theme_seed_blue">湖藍</string>
+    <string name="theme_seed_purple">紫羅蘭</string>
+    <string name="theme_seed_pink">玫紅</string>
+    <string name="theme_seed_orange">琥珀</string>
+    <string name="theme_seed_monet">桌布取色</string>
+
+    <string name="theme_variant_tonal_spot">色調（預設）</string>
+    <string name="theme_variant_vibrant">鮮豔</string>
+    <string name="theme_variant_expressive">表現力</string>
+    <string name="theme_variant_neutral">中性</string>
+    <string name="theme_variant_monochrome">單色</string>
+
+    <string name="theme_spec_2021">2021 規範</string>
+    <string name="theme_spec_2025">2025 規範</string>
+
+    <string name="alive_channel_name">背景存活服務</string>
+    <string name="alive_channel_description">
+        此通知用於確保 App 在背景存活。若被系統終止，目標應用程式可能無法連接至此 App，這將導致「使用紀錄」與「記住選擇」失效。
+    </string>
+
+    <string name="alive_notification_title">@string/alive_channel_name</string>
+    <string name="alive_notification_content">常駐執行中，可在設定中關閉。</string>
+
+    <string name="empty_rule_title">未找到應用程式</string>
+    <string name="empty_rule_sub">請下拉重新整理，或在設定中開啟「顯示系統應用程式」</string>
+    <string name="empty_record_title">暫無攔截紀錄</string>
+    <string name="empty_record_sub">當偵測並攔截剪貼簿讀寫行為時將顯示於此</string>
+    <string name="log_filter_empty">沒有符合條件的記錄</string>
+
+    <string name="about_title">關於 FuckClip</string>
+    <string name="about_check_update">檢查更新</string>
+    <string name="about_check_update_desc">目前版本：%1$s (%2$d)</string>
+    <string name="about_github">GitHub 儲存庫</string>
+
+    <string name="about_license">開源授權條款</string>
+
+    <string name="about_checking">正在檢查更新…</string>
+    <string name="about_latest">目前已是最新版本 (%1$s)</string>
+    <string name="about_new_version">發現新版本 %1$s</string>
+    <string name="about_update_now">前往更新</string>
+    <string name="about_update_cancel">暫不更新</string>
+    <string name="about_check_failed">檢查更新失敗，請檢查網路連線或稍後重試</string>
+    <string name="update_notes_empty">有新版本發布，建議更新以體驗最新功能。</string>
+    <string name="update_size">安裝包大小：%1$s</string>
+    <string name="update_skip">略過此版本</string>
+    <string name="update_downloading">正在下載更新…</string>
+    <string name="update_progress">%1$s / %2$s（%3$d%%）</string>
+    <string name="update_download_failed">下載失敗</string>
+    <string name="update_download_failed_hint">應用程式內下載或驗證未通過，可改用瀏覽器前往 Release 頁面下載。</string>
+    <string name="update_open_browser">使用瀏覽器下載</string>
+    <string name="update_need_install_permission">請先允許本應用程式安裝未知應用程式，返回後再次點擊「前往更新」</string>
+    <string name="update_install_failed">無法啟動安裝程式</string>
+    <string name="settings_section_update">更新</string>
+    <string name="settings_auto_update">啟動時自動檢查更新</string>
+    <string name="settings_auto_update_summary">每天最多檢查一次 GitHub Release，發現新版本時可在應用程式內下載並安裝</string>
+    <string name="about_section_project">專案與原始碼</string>
+    <string name="about_section_developer">開發者與致謝</string>
+    <string name="about_dev_author">核心維護</string>
+
+    <string name="about_dev_original">原作者</string>
+
+    <string name="sort_title">應用程式排序</string>
+    <string name="sort_by_name">應用程式名稱 (A-Z)</string>
+    <string name="sort_by_package">套件名稱 (A-Z)</string>
+    <string name="sort_by_rule">規則狀態 (已設定優先)</string>
+    <string name="sort_by_update_time">安裝／更新時間</string>
+    <string name="sort_current">排序：%1$s</string>
+
+    <string name="log_empty_content">(無文字內容)</string>
+    <string name="log_dialog_title">剪貼簿文字詳情</string>
+    <string name="log_dialog_char_count">%1$d 字元</string>
+    <string name="log_dialog_count">已合併 %1$d 次存取</string>
+
+    <string name="whitelist_filter_all">全部</string>
+    <string name="whitelist_filter_configured">已設定</string>
+    <string name="whitelist_export">匯出規則備份</string>
+    <string name="whitelist_import">匯入規則備份</string>
+    <string name="whitelist_import_title">匯入規則備份</string>
+    <string name="whitelist_import_hint">請在下方貼上匯出的規則 JSON 內容：</string>
+    <string name="whitelist_import_success">成功匯入 %1$d 條規則</string>
+    <string name="whitelist_import_failed">格式無效，匯入失敗</string>
+    <string name="whitelist_import_confirm">匯入</string>
+    <string name="action_save">儲存</string>
+    <string name="action_reset_default">重設為預設值</string>
+    <string name="action_clear">清除</string>
+
+    <string name="dashboard_status_inactive">模組未啟用</string>
+    <string name="dashboard_status_paused">防護已暫停</string>
+    <string name="dashboard_status_pill_inactive">未啟用</string>
+    <string name="dashboard_status_pill_paused">已暫停</string>
+    <string name="dashboard_status_desc_inactive">請在 LSPosed 管理器中啟用模組並勾選系統框架後生效</string>
+    <string name="dashboard_quick_apps_desc">按應用程式設定讀取與寫入剪貼簿放行規則</string>
+    <string name="dashboard_quick_history_desc">查看應用程式申請與攔截觸發的詳細存取紀錄</string>
+    <string name="dashboard_quick_theme_desc">桌布動態取色、多主題配色方案與純黑外觀自訂</string>
+</resources>

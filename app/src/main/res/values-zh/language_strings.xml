@@ -1,0 +1,10 @@
+<resources>
+    <string name="settings_language">语言</string>
+    <string name="language_follow_system">跟随系统</string>
+    <string name="settings_theme_summary">莫奈壁纸取色、色彩风格与排版</string>
+    <string name="settings_about_summary">版本管理、检查更新、开源仓库与致谢</string>
+    <string name="error_rule_save">无法保存 %1$s 的规则</string>
+    <string name="error_rule_load">加载应用规则失败，请重试。</string>
+    <string name="error_record_load">加载使用记录失败，请重试。</string>
+    <string name="error_record_clear">清空使用记录失败，请重试。</string>
+</resources>

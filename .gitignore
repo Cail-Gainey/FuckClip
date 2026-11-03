@@ -1,0 +1,118 @@
+# ====================================================================
+# Build & Compilation Artifacts
+# ====================================================================
+build/
+*/build/
+bin/
+gen/
+out/
+.gradle/
+.kotlin/
+# Package outputs
+*.apk
+*.aar
+*.ap_
+*.aab
+*.dex
+*.class
+cliptest.apk
+
+# ====================================================================
+# Test Sources & Test Artifacts
+# ====================================================================
+# Unit test and instrumentation test directories across all modules
+**/src/test/
+**/src/androidTest/
+src/test/
+src/androidTest/
+
+# Test source files
+*Test.kt
+*Tests.kt
+*Test.java
+*Tests.java
+test_*.py
+*_test.py
+
+# Test reports and outputs
+**/test-results/
+**/test-reports/
+**/reports/tests/
+
+# ====================================================================
+# Android Studio & Gradle
+# ====================================================================
+# Local configuration file (SDK location, local properties)
+local.properties
+/local.properties
+
+# Proguard / R8
+proguard/
+configuration/
+
+# Android Studio Profiler and Navigation
+captures/
+/captures
+.navigation/
+
+# Native build cache
+.externalNativeBuild
+.cxx/
+
+# ====================================================================
+# IDE & Editors
+# ====================================================================
+# IntelliJ IDEA / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code
+.vscode/
+
+# ====================================================================
+# Signing Keys & Credentials
+# ====================================================================
+*.keystore
+*.jks
+!keystore/release.jks
+
+# ====================================================================
+# OS-specific Files
+# ====================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ====================================================================
+# Logs & Memory Dumps
+# ====================================================================
+*.log
+*.hprof
+
+# ====================================================================
+# Backups & Temporary Files
+# ====================================================================
+*~
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# ====================================================================
+# Modules & Tooling Caches
+# ====================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+/magisk-module
+/lsposed-module
+.omc/
+.omx/
+.gemini/
+.claude/

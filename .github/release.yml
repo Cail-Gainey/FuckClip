@@ -1,0 +1,28 @@
+# GitHub automated release notes configuration
+# https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+
+changelog:
+  categories:
+    - title: "新特性 / Features"
+      labels:
+        - "feat"
+        - "feature"
+        - "enhancement"
+    - title: "问题修复 / Bug Fixes"
+      labels:
+        - "fix"
+        - "bug"
+    - title: "界面与多语言 / UI & i18n"
+      labels:
+        - "ui"
+        - "theme"
+        - "i18n"
+        - "translation"
+    - title: "架构重构与维护 / Refactoring & Maintenance"
+      labels:
+        - "refactor"
+        - "chore"
+        - "dependencies"
+    - title: "其他变更 / Other Changes"
+      labels:
+        - "*"

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="request_prompt_prefix">嘗試修改剪貼簿為：</string>
+    <string name="request_allow">允許</string>
+    <string name="request_deny">拒絕</string>
+    <string name="request_unknown_app">未知應用程式</string>
+    <string name="request_toast_allowed">已允許%1$s修改剪貼簿為：%2$s</string>
+    <string name="request_toast_denied">已拒絕%1$s修改剪貼簿為：%2$s</string>
+    <string name="request_toast_unknown">未知操作：%1$s嘗試修改剪貼簿為：%2$s</string>
+
+    <string name="request_read_prompt">嘗試讀取剪貼簿：</string>
+    <string name="request_read_prompt_empty">嘗試讀取剪貼簿</string>
+    <string name="request_remember">記住此選擇</string>
+    <string name="request_toast_read_allowed">已允許%1$s讀取剪貼簿</string>
+    <string name="request_toast_read_denied">已拒絕%1$s讀取剪貼簿</string>
+
+    <string name="request_badge_write">寫入剪貼簿</string>
+    <string name="request_badge_read">讀取剪貼簿</string>
+    <string name="request_preview_title">寫入內容預覽</string>
+    <string name="request_write_preview_title">即將寫入的內容</string>
+    <string name="request_read_preview_title">目前剪貼簿內容</string>
+    <string name="request_write_notice">該應用程式正在嘗試修改您的系統剪貼簿內容。</string>
+    <string name="request_read_notice">該應用程式正在申請讀取目前剪貼簿內容，請注意保護隱私安全。</string>
+    <string name="request_remember_hint">後續將自動套用此規則，可在規則清單中更改</string>
+    <string name="request_content_empty">(空內容)</string>
+    <string name="request_content_chars">%d 字元</string>
+</resources>

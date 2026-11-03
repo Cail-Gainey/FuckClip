@@ -1,0 +1,185 @@
+<resources>
+    <string name="app_name" translatable="false">FuckClip</string>
+    <string name="xposed_module_description">
+        Don\'t touch my clipboard!!!
+    </string>
+
+    <string name="options_search">Search</string>
+    <string name="options_show_system">Show system apps</string>
+    <string name="options_clear_history">Clear history</string>
+    <string name="options_about">About</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_app">Apps</string>
+    <string name="title_history">Activity history</string>
+    <string name="title_settings">Settings</string>
+
+    <string name="dashboard_status_active">Protection active</string>
+    <string name="dashboard_status_pill">● Running normally</string>
+    <string name="dashboard_status_desc">Real-time IClipboard proxy · Blocks unauthorized clipboard writes and reads</string>
+    <string name="dashboard_stat_rules">Configured rules</string>
+    <string name="dashboard_stat_denied">Blocked</string>
+    <string name="dashboard_stat_granted">Allowed</string>
+    <string name="dashboard_section_quick">Quick controls</string>
+    <string name="dashboard_section_device">Device information</string>
+    <string name="dashboard_device_model">Device model</string>
+    <string name="dashboard_device_android">Android version</string>
+    <string name="dashboard_device_kernel">Kernel</string>
+    <string name="dashboard_device_abi">CPU architecture</string>
+    <string name="dashboard_device_build">Build version</string>
+
+    <string name="home_rogue_throttle_title">Throttle frequent reads</string>
+    <string name="home_rogue_throttle_subtitle">Intelligently throttle high-frequency polling and prevent prompt bombardment</string>
+    <string name="home_rogue_throttle_status">Cooldown: %1$ds · Tolerance: %2$d · Threshold: %3$d reads / 3s</string>
+    <string name="home_rogue_throttle_config_title">Frequent read restriction</string>
+    <string name="home_rogue_throttle_cooldown_label">Deny cooldown</string>
+    <string name="home_rogue_throttle_cooldown_desc">Auto-deny subsequent requests silently after prompt rejection without re-prompting</string>
+    <string name="home_rogue_throttle_grant_burst_label">Grant burst window</string>
+    <string name="home_rogue_throttle_grant_burst_desc">Permit quick consecutive reads within this window after allowing once</string>
+    <string name="home_rogue_throttle_frequency_label">Rate limit threshold</string>
+    <string name="home_rogue_throttle_frequency_desc">Automatically throttle reads exceeding this attempt count in 3 seconds</string>
+    <string name="home_rogue_throttle_seconds">%1$d s</string>
+    <string name="home_rogue_throttle_times">%1$d reads / 3s</string>
+    <string name="home_rogue_throttle_tolerance_label">Reads before throttling</string>
+    <string name="home_rogue_throttle_tolerance_desc">Keep answering this many reads from one app within a short time before silent throttling starts, so normal apps are not cut off too early</string>
+    <string name="home_rogue_throttle_tolerance_times">%1$d reads</string>
+
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_section_protection">Protection &amp; restrictions</string>
+    <string name="settings_master_switch">Clipboard protection</string>
+    <string name="settings_master_switch_summary">Intercept unauthorized clipboard reads and writes</string>
+    <string name="settings_section_list">App list</string>
+    <string name="settings_show_system_summary">Include system apps in the Apps list</string>
+    <string name="settings_section_service">Background</string>
+    <string name="settings_keep_alive">Keep alive in background</string>
+    <string name="settings_keep_alive_summary">Keep the module process running with a persistent notification so hooks can read rules faster. Turning this off stops the service and removes the notification. Protection still works, but the first access may be slower after the app is killed.</string>
+
+    <string name="settings_section_data">Data</string>
+    <string name="settings_export_rules">Export rule backup</string>
+    <string name="settings_export_rules_summary">Export configured application rules to a standard JSON file</string>
+    <string name="settings_import_rules">Import rules</string>
+    <string name="settings_import_rules_summary">Restore rules from a JSON backup file and apply immediately</string>
+    <string name="settings_export_rules_success">Rules backup exported successfully</string>
+    <string name="settings_export_rules_failed">Failed to export rules backup</string>
+    <string name="settings_clear_history_summary">Delete all activity history. This cannot be undone.</string>
+    <string name="settings_clear_history_confirm">Clear all activity history?</string>
+    <string name="settings_version">Version %1$s (%2$d)</string>
+
+    <string name="title_theme">Theme</string>
+    <string name="theme_mode">Theme mode</string>
+    <string name="theme_mode_system">System</string>
+    <string name="theme_mode_light">Light</string>
+    <string name="theme_mode_dark">Dark</string>
+    <string name="theme_mode_amoled">Pure black</string>
+    <string name="theme_preview">Theme preview</string>
+    <string name="theme_preview_sample_card">Sample card</string>
+    <string name="theme_preview_sample_button">Sample button</string>
+    <string name="theme_section_color">Colors</string>
+    <string name="theme_monet">Wallpaper colors</string>
+    <string name="theme_monet_summary">Use colors from your wallpaper. Requires Android 12 or later.</string>
+    <string name="theme_monet_hint">When wallpaper colors are enabled, the theme color, color style, and color specification below do not apply.</string>
+    <string name="theme_palette">Theme color</string>
+    <string name="theme_style">Color style</string>
+    <string name="theme_spec">Color specification</string>
+    <string name="theme_section_nav">Bottom navigation</string>
+    <string name="theme_floating_nav">Floating navigation bar</string>
+    <string name="theme_floating_nav_summary">Rounded floating bar with icons only</string>
+    <string name="theme_value">%1$s: %2$s</string>
+
+    <string name="theme_seed_teal">Teal (default)</string>
+    <string name="theme_seed_blue">Blue</string>
+    <string name="theme_seed_purple">Violet</string>
+    <string name="theme_seed_pink">Rose</string>
+    <string name="theme_seed_orange">Amber</string>
+    <string name="theme_seed_monet">Monet</string>
+
+    <string name="theme_variant_tonal_spot">Tonal spot (default)</string>
+    <string name="theme_variant_vibrant">Vibrant</string>
+    <string name="theme_variant_expressive">Expressive</string>
+    <string name="theme_variant_neutral">Neutral</string>
+    <string name="theme_variant_monochrome">Monochrome</string>
+
+    <string name="theme_spec_2021">2021 specification</string>
+    <string name="theme_spec_2025">2025 specification</string>
+
+    <string name="alive_channel_name">Background keep-alive service</string>
+    <string name="alive_channel_description">
+        This notification keeps the app running in the background. If the system kills the app, other apps may be unable to connect to it, preventing activity history and remembered choices from working.
+    </string>
+
+    <string name="alive_notification_title">@string/alive_channel_name</string>
+    <string name="alive_notification_content">Keep-alive is running. You can turn it off in Settings.</string>
+
+    <string name="empty_rule_title">No apps found</string>
+    <string name="empty_rule_sub">Pull down to refresh, or enable Show system apps in Settings</string>
+    <string name="empty_record_title">No blocked activity yet</string>
+    <string name="empty_record_sub">Detected and blocked clipboard writes and reads will appear here</string>
+    <string name="log_filter_empty">No matching records</string>
+
+    <string name="about_title">About FuckClip</string>
+    <string name="about_check_update">Check for updates</string>
+    <string name="about_check_update_desc">Current version: %1$s (%2$d)</string>
+    <string name="about_github">GitHub repository</string>
+    <string name="about_github_url" translatable="false">https://github.com/Cail-Gainey/FuckClip</string>
+    <string name="about_license">Open-source license</string>
+    <string name="about_license_desc" translatable="false">MIT License</string>
+    <string name="about_checking">Checking for updates…</string>
+    <string name="about_latest">You are on the latest version (%1$s)</string>
+    <string name="about_new_version">New version available: %1$s</string>
+    <string name="about_update_now">Update now</string>
+    <string name="about_update_cancel">Not now</string>
+    <string name="about_check_failed">Could not check for updates. Check your connection or try again later.</string>
+    <string name="update_notes_empty">A new version is available. Update to try the latest features.</string>
+    <string name="update_size">Download size: %1$s</string>
+    <string name="update_skip">Skip this version</string>
+    <string name="update_downloading">Downloading update…</string>
+    <string name="update_progress">%1$s / %2$s (%3$d%%)</string>
+    <string name="update_download_failed">Download failed</string>
+    <string name="update_download_failed_hint">The in-app download or verification failed. You can download the update from the Releases page in your browser instead.</string>
+    <string name="update_open_browser">Download in browser</string>
+    <string name="update_need_install_permission">Allow this app to install unknown apps, then return and tap Update now again</string>
+    <string name="update_install_failed">Could not open the installer</string>
+    <string name="settings_section_update">Updates</string>
+    <string name="settings_auto_update">Check for updates on launch</string>
+    <string name="settings_auto_update_summary">Check GitHub Releases at most once a day. Download and install new versions in the app.</string>
+    <string name="about_section_project">Project and source code</string>
+    <string name="about_section_developer">Developers and credits</string>
+    <string name="about_dev_author">Lead maintainer</string>
+    <string name="about_dev_author_name" translatable="false">Cail-Gainey</string>
+    <string name="about_dev_original">Original author</string>
+    <string name="about_dev_original_name" translatable="false">ablist97</string>
+
+    <string name="sort_title">Sort apps</string>
+    <string name="sort_by_name">App name (A–Z)</string>
+    <string name="sort_by_package">Package name (A–Z)</string>
+    <string name="sort_by_rule">Rule status (configured first)</string>
+    <string name="sort_by_update_time">Install/update time</string>
+    <string name="sort_current">Sort: %1$s</string>
+
+    <string name="log_empty_content">(No text content)</string>
+    <string name="log_dialog_title">Clipboard content</string>
+    <string name="log_dialog_char_count">%1$d chars</string>
+    <string name="log_dialog_count">Merged %1$d accesses</string>
+
+    <string name="whitelist_filter_all">All</string>
+    <string name="whitelist_filter_configured">Configured</string>
+    <string name="whitelist_export">Export rules</string>
+    <string name="whitelist_import">Import rules</string>
+    <string name="whitelist_import_title">Import rule backup</string>
+    <string name="whitelist_import_hint">Paste exported rules JSON below:</string>
+    <string name="whitelist_import_success">Successfully imported %1$d rules</string>
+    <string name="whitelist_import_failed">Invalid format. Import failed.</string>
+    <string name="whitelist_import_confirm">Import</string>
+    <string name="action_save">Save</string>
+    <string name="action_reset_default">Reset to default</string>
+    <string name="action_clear">Clear</string>
+
+    <string name="dashboard_status_inactive">Module inactive</string>
+    <string name="dashboard_status_paused">Protection paused</string>
+    <string name="dashboard_status_pill_inactive">Inactive</string>
+    <string name="dashboard_status_pill_paused">Paused</string>
+    <string name="dashboard_status_desc_inactive">Please enable the module and select the system framework in LSPosed Manager</string>
+    <string name="dashboard_quick_apps_desc">Configure clipboard read and write rules per app</string>
+    <string name="dashboard_quick_history_desc">View detailed access logs and interception triggers</string>
+    <string name="dashboard_quick_theme_desc">Wallpaper colors, color schemes and pure black styling</string>
+</resources>

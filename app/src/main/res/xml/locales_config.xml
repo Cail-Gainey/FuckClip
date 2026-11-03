@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 添加翻译资源后在此注册 BCP 47 tag，应用内选择器和 Android 13+ 系统设置共用此清单。
+     Register new BCP 47 tags here after adding translations; app and platform pickers share it. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="zh-CN" />
+    <locale android:name="zh-TW" />
+</locale-config>

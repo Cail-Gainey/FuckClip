@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Material 3 深色配色，与 values/colors.xml 同名，供 DayNight 主题切换。
+  Material 3 dark palette, same names as values/colors.xml for DayNight switching.
+-->
+<resources>
+    <color name="m3_primary">#FF53DBC9</color>
+    <color name="m3_on_primary">#FF003731</color>
+    <color name="m3_primary_container">#FF005048</color>
+    <color name="m3_on_primary_container">#FF74F8E5</color>
+    <color name="m3_primary_inverse">#FF006A60</color>
+
+    <color name="m3_secondary">#FFB1CCC6</color>
+    <color name="m3_on_secondary">#FF1C3531</color>
+    <color name="m3_secondary_container">#FF334B48</color>
+    <color name="m3_on_secondary_container">#FFCCE8E2</color>
+
+    <color name="m3_tertiary">#FFB3C8E8</color>
+    <color name="m3_on_tertiary">#FF1C314B</color>
+    <color name="m3_tertiary_container">#FF334863</color>
+    <color name="m3_on_tertiary_container">#FFD3E5FF</color>
+
+    <color name="m3_error">#FFFFB4AB</color>
+    <color name="m3_on_error">#FF690005</color>
+    <color name="m3_error_container">#FF93000A</color>
+    <color name="m3_on_error_container">#FFFFDAD6</color>
+
+    <color name="m3_background">#FF101413</color>
+    <color name="m3_on_background">#FFDEE4E1</color>
+    <color name="m3_surface">#FF101413</color>
+    <color name="m3_on_surface">#FFDEE4E1</color>
+    <color name="m3_surface_variant">#FF3F4947</color>
+    <color name="m3_on_surface_variant">#FFBEC9C6</color>
+    <color name="m3_surface_inverse">#FFDEE4E1</color>
+    <color name="m3_on_surface_inverse">#FF2C3230</color>
+    <color name="m3_outline">#FF889391</color>
+    <color name="m3_outline_variant">#FF3F4947</color>
+    <color name="m3_surface_dim">#FF101413</color>
+    <color name="m3_surface_bright">#FF363B39</color>
+    <color name="m3_surface_container_lowest">#FF0B0F0E</color>
+    <color name="m3_surface_container_low">#FF171D1B</color>
+    <color name="m3_surface_container">#FF1C211F</color>
+    <color name="m3_surface_container_high">#FF272D2B</color>
+    <color name="m3_surface_container_highest">#FF323836</color>
+</resources>

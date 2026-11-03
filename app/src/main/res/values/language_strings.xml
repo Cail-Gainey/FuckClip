@@ -1,0 +1,10 @@
+<resources>
+    <string name="settings_language">Language</string>
+    <string name="language_follow_system">Follow system</string>
+    <string name="settings_theme_summary">Wallpaper colors, color styles and typography</string>
+    <string name="settings_about_summary">Versions, updates, source code and credits</string>
+    <string name="error_rule_save">Could not save the rule for %1$s</string>
+    <string name="error_rule_load">Could not load app rules. Please try again.</string>
+    <string name="error_record_load">Could not load history. Please try again.</string>
+    <string name="error_record_clear">Could not clear history. Please try again.</string>
+</resources>

@@ -1,0 +1,10 @@
+<resources>
+    <string name="settings_language">語言</string>
+    <string name="language_follow_system">跟隨系統</string>
+    <string name="settings_theme_summary">Monet 桌布取色、色彩風格與排版</string>
+    <string name="settings_about_summary">版本管理、檢查更新、開源儲存庫與致謝</string>
+    <string name="error_rule_save">無法儲存 %1$s 的規則</string>
+    <string name="error_rule_load">載入應用程式規則失敗，請重試。</string>
+    <string name="error_record_load">載入使用紀錄失敗，請重試。</string>
+    <string name="error_record_clear">清空使用紀錄失敗，請重試。</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 应用内更新下载的安装包放在 cache/updates/，只把这一个目录共享给系统安装器 -->
+<!-- Downloaded update APKs live in cache/updates/; only that directory is shared with the installer -->
+<paths>
+    <cache-path
+        name="updates"
+        path="updates/" />
+</paths>

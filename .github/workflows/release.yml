@@ -1,0 +1,253 @@
+name: Release Build
+
+# 推送 tag（如 v1.0.0 或 1.0.0）或手动触发时：
+# 1. 提取当前版本号与上一版本 tag。
+# 2. 自动汇总两次版本之间合并的 Pull Requests 作为 Release 说明。
+# 3. 自动使用内置永久签名证书（或自定义 Secret）编译签名 APK 并校验。
+# 4. 自动发布 GitHub Release 并上传安装包。
+
+on:
+  push:
+    tags:
+      - 'v*'
+      - '[0-9]+.[0-9]+.[0-9]+*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release Tag (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build & Publish Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve version from tag
+        id: version
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_TAG: ${{ github.event.inputs.tag_name }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            TAG="$INPUT_TAG"
+          else
+            TAG="$REF_NAME"
+          fi
+
+          CLEAN_TAG="${TAG#v}"
+          if ! echo "$CLEAN_TAG" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+'; then
+            echo "::error::Tag '$TAG' must follow semantic versioning (e.g. v1.2.3 or 1.2.3)"
+            exit 1
+          fi
+
+          VERSION_NAME="$(echo "$CLEAN_TAG" | grep -Eo '^[0-9]+\.[0-9]+\.[0-9]+')"
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION_NAME"
+          VERSION_CODE=$((MAJOR * 10000 + MINOR * 100 + PATCH))
+
+          PRERELEASE=""
+          if [[ "$CLEAN_TAG" == *"-"* ]]; then
+            PRERELEASE="${CLEAN_TAG#*-}"
+          fi
+
+          if [ -n "$PRERELEASE" ]; then
+            VERSION_STRING="v${VERSION_NAME}-${PRERELEASE}"
+            IS_PRERELEASE="true"
+          else
+            VERSION_STRING="v${VERSION_NAME}"
+            IS_PRERELEASE="false"
+          fi
+
+          # 查找当前 tag 之前的上一个版本 tag
+          PREV_TAG=$(git describe --tags --abbrev=0 "${TAG}^" 2>/dev/null || echo "")
+
+          echo "tag_name=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version_name=$VERSION_NAME" >> "$GITHUB_OUTPUT"
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+          echo "version_string=$VERSION_STRING" >> "$GITHUB_OUTPUT"
+          echo "is_prerelease=$IS_PRERELEASE" >> "$GITHUB_OUTPUT"
+          echo "prev_tag=$PREV_TAG" >> "$GITHUB_OUTPUT"
+
+          echo "Current Release Tag: $TAG (versionName=$VERSION_NAME, versionCode=$VERSION_CODE, preRelease=${PRERELEASE:-None})"
+          echo "Previous Release Tag: ${PREV_TAG:-None (Initial Release)}"
+
+      - name: Generate Release Notes (PRs between releases)
+        id: notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.version.outputs.tag_name }}
+          PREV_TAG: ${{ steps.version.outputs.prev_tag }}
+        run: |
+          echo "Generating release notes for $TAG (Previous: ${PREV_TAG:-Initial Release})..."
+
+          # 优先调用 GitHub 官方 API 自动汇总两次 tag 之间合并的所有 PR（配合 .github/release.yml 分类）
+          GH_NOTES=""
+          if [ -n "$GITHUB_TOKEN" ]; then
+            if [ -n "$PREV_TAG" ]; then
+              GH_NOTES=$(gh api "/repos/${{ github.repository }}/releases/generate-notes" \
+                -f tag_name="$TAG" \
+                -f previous_tag_name="$PREV_TAG" \
+                --jq .body 2>/dev/null || true)
+            else
+              GH_NOTES=$(gh api "/repos/${{ github.repository }}/releases/generate-notes" \
+                -f tag_name="$TAG" \
+                --jq .body 2>/dev/null || true)
+            fi
+          fi
+
+          # 若官方 API 未获取到结果（如离线或无对应 PR），从 Git Commit 历史提取 PR 合并日志
+          if [ -n "$GH_NOTES" ]; then
+            BODY="$GH_NOTES"
+          else
+            if [ -n "$PREV_TAG" ]; then
+              RANGE="${PREV_TAG}..${TAG}"
+              HEADER="## 变更日志 / What's Changed (${PREV_TAG} → ${TAG})"
+              DIFF_URL="https://github.com/${{ github.repository }}/compare/${PREV_TAG}...${TAG}"
+            else
+              RANGE="${TAG}"
+              HEADER="## 变更日志 / What's Changed (${TAG})"
+              DIFF_URL="https://github.com/${{ github.repository }}/commits/${TAG}"
+            fi
+
+            PR_MERGES=$(git log "$RANGE" --merges --grep="Merge pull request #" --pretty=format:"* %s (%h)" 2>/dev/null || true)
+            SQUASH_PRS=$(git log "$RANGE" --grep="(#[0-9]\+)" --pretty=format:"* %s (%h)" 2>/dev/null || true)
+            ALL_COMMITS=$(git log "$RANGE" --no-merges --pretty=format:"* %s (%h)" 2>/dev/null || true)
+
+            BODY="${HEADER}\n\n"
+            if [ -n "$PR_MERGES" ] || [ -n "$SQUASH_PRS" ]; then
+              BODY="${BODY}### 合并的 Pull Requests / Merged PRs\n"
+              [ -n "$PR_MERGES" ] && BODY="${BODY}${PR_MERGES}\n"
+              [ -n "$SQUASH_PRS" ] && BODY="${BODY}${SQUASH_PRS}\n"
+            elif [ -n "$ALL_COMMITS" ]; then
+              BODY="${BODY}### 提交明细 / Commits\n${ALL_COMMITS}\n"
+            else
+              BODY="${BODY}* 版本发布 / Release build\n"
+            fi
+            BODY="${BODY}\n**完整对比 / Full Changelog**: ${DIFF_URL}"
+          fi
+
+          echo -e "$BODY" > release_notes.md
+          echo "Generated release notes:"
+          cat release_notes.md
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Make Gradlew Executable
+        run: chmod +x gradlew
+
+      - name: Prepare signing keystore
+        id: keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "Using custom secret release keystore..."
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
+            echo "KEYSTORE_FILE=$RUNNER_TEMP/release.keystore" >> "$GITHUB_ENV"
+            echo "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
+            echo "KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
+            echo "KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+          elif [ -f "keystore/release.jks" ]; then
+            echo "Using repository permanent release keystore (free & automatic)..."
+            echo "KEYSTORE_FILE=$(pwd)/keystore/release.jks" >> "$GITHUB_ENV"
+            echo "KEYSTORE_PASSWORD=fuckclip" >> "$GITHUB_ENV"
+            echo "KEY_ALIAS=fuckclip" >> "$GITHUB_ENV"
+            echo "KEY_PASSWORD=fuckclip" >> "$GITHUB_ENV"
+          else
+            echo "::error::No release keystore found."
+            exit 1
+          fi
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest --stacktrace
+
+      - name: Build Release APK
+        env:
+          UPDATE_CHECK_TOKEN: ${{ secrets.UPDATE_CHECK_TOKEN }}
+        run: >
+          ./gradlew assembleRelease --stacktrace
+          -PappVersionName=${{ steps.version.outputs.version_name }}
+          -PappVersionCode=${{ steps.version.outputs.version_code }}
+          -PupdateCheckToken="${{ secrets.UPDATE_CHECK_TOKEN }}"
+
+      - name: Sign, verify and rename APK
+        id: apk
+        env:
+          VER_STR: ${{ steps.version.outputs.version_string }}
+          VER_CODE: ${{ steps.version.outputs.version_code }}
+        run: |
+          mkdir -p output
+          APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          APP_NAME="FuckClip"
+
+          ARCHS=("arm64-v8a" "armeabi-v7a" "universal" "x86_64")
+
+          for ARCH in "${ARCHS[@]}"; do
+            SRC=$(ls app/build/outputs/apk/release/*"${ARCH}"*.apk 2>/dev/null | head -1)
+            if [ -z "$SRC" ] || [ ! -f "$SRC" ]; then
+              echo "::error::Expected APK for architecture '$ARCH' not found!"
+              exit 1
+            fi
+
+            # 若 Gradle 未签名，使用 apksigner 签名
+            if ! "$APKSIGNER" verify "$SRC" 2>/dev/null; then
+              echo "Signing APK with apksigner for $ARCH..."
+              "$APKSIGNER" sign --ks "$KEYSTORE_FILE" \
+                --ks-key-alias "$KEY_ALIAS" \
+                --ks-pass "pass:$KEYSTORE_PASSWORD" \
+                --key-pass "pass:$KEY_PASSWORD" \
+                "$SRC"
+            fi
+
+            echo "Verifying APK signature for $ARCH ($SRC)..."
+            "$APKSIGNER" verify --print-certs "$SRC"
+
+            DEST_NAME="${APP_NAME}_${VER_STR}_${VER_CODE}-${ARCH}-release.apk"
+            DEST="output/${DEST_NAME}"
+            cp "$SRC" "$DEST"
+            echo "Prepared asset: $DEST_NAME"
+          done
+
+          echo "Generated Release APKs:"
+          ls -lh output/
+
+          (cd output && sha256sum *.apk > sha256sums.txt)
+          cat output/sha256sums.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag_name }}
+          name: FuckClip ${{ steps.version.outputs.tag_name }}
+          draft: false
+          prerelease: ${{ steps.version.outputs.is_prerelease == 'true' }}
+          body_path: release_notes.md
+          fail_on_unmatched_files: true
+          files: |
+            output/*.apk
+            output/sha256sums.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
