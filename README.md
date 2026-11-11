@@ -23,7 +23,7 @@
 
 **FuckClip** 是一款基于现代 Android 技术栈（Kotlin 2.0、Jetpack Compose、Material 3、Koin）与 [LibXposed](https://github.com/libxposed)（API 102）重构的剪贴板隐私防护模块。
 
-模块直接在 Android 系统服务级进程（`system_server`）中对系统剪贴板服务（`IClipboard`，包含原生 Android 与三星专有剪贴板服务）的 `setPrimaryClip()` 与 `getPrimaryClip()` 进行动态代理与拦截，帮助用户彻底杜绝各类应用未经授权静默扫描、窃取或污染剪贴板的行为。
+模块直接在 Android 系统服务级进程（`system_server`）中对系统剪贴板服务（`IClipboard`，包含原生 Android、小米 MIUI / 澎湃 HyperOS、Vivo OriginOS、OPPO ColorOS 扩展服务与三星专有剪贴板服务）的 `setPrimaryClip()`、`getPrimaryClip()` 及元数据探测接口进行动态代理与拦截，帮助用户彻底杜绝各类应用未经授权静默扫描、窃取或污染剪贴板的行为。
 
 ---
 
@@ -88,7 +88,11 @@ graph TD
     subgraph HookLayer [":hook 挂钩层"]
         Entry["LibXposed 模块入口 (FuckClipModule)"]
         AndroidHook["原生剪贴板挂钩 (AndroidClipboardHook)"]
+        MiuiHook["小米 MIUI/HyperOS 挂钩 (MiuiClipboardHook)"]
+        OriginHook["Vivo OriginOS 挂钩 (OriginOsClipboardHook)"]
+        ColorHook["OPPO ColorOS 挂钩 (ColorOsClipboardHook)"]
         SamsungHook["三星剪贴板挂钩 (SamsungClipboardHook)"]
+        MetaHook["元数据防探测挂钩 (ClipboardMetadataHook)"]
         Reader["防触发反射读取 (ClipboardReader)"]
         PromptMgr["防死锁请求队列 (ClipboardPromptManager)"]
         SysDialog["系统级授权弹窗 (ClipboardRequestDialog)"]
@@ -176,7 +180,7 @@ python3 tools/check_translations.py
 
 **FuckClip** is an advanced Android clipboard privacy protection and access management module completely re-engineered on top of Kotlin 2.0, Jetpack Compose, Material 3, and [LibXposed](https://github.com/libxposed) (API 102).
 
-It dynamically intercepts `setPrimaryClip()` and `getPrimaryClip()` directly inside `system_server` for both AOSP and Samsung clipboard services, stopping rogue applications from silently monitoring, stealing, or polluting your clipboard.
+It dynamically intercepts `setPrimaryClip()`, `getPrimaryClip()`, and metadata probes directly inside `system_server` across AOSP, Xiaomi MIUI / HyperOS (`ClipboardServiceStubImpl`), Vivo OriginOS (`VivoClipboardServiceImpl`), OPPO ColorOS (`ClipboardServiceExtImpl`), and Samsung clipboard services, stopping rogue applications from silently monitoring, stealing, or polluting your clipboard.
 
 ### Key Highlights
 - **Bi-directional Permission Control**: Configurable per-app policies for both *Write* and *Read* (Ask, Allow, Deny).

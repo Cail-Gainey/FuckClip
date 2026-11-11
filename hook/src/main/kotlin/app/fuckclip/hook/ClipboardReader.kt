@@ -1,8 +1,12 @@
 package app.fuckclip.hook
 
 import android.content.ClipData
+import android.content.Context
 import android.util.Log
 import android.util.SparseArray
+
+private const val MAX_CAPTURED_TEXT_CHARS = 8_192
+private const val TRUNCATION_MARKER = "…"
 
 /**
  * Reads clipboard content directly from internal service data structures, bypassing background restrictions and paste notices.
@@ -19,6 +23,42 @@ internal object ClipboardReader {
      */
     fun reset() {
         // No static failed caches so subsequent attempts always re-evaluate cleanly
+    }
+
+    /**
+     * Extracts plain text from [clipData] using [context], capping the length at [MAX_CAPTURED_TEXT_CHARS].
+     *
+     * 使用 [context] 从 [clipData] 中解析提取纯文本内容，长度限制在 [MAX_CAPTURED_TEXT_CHARS] 以内。
+     */
+    fun extractClipText(clipData: ClipData?, context: Context?): String? {
+        if (clipData == null || clipData.itemCount <= 0) return null
+        val sb = StringBuilder()
+        for (i in 0 until clipData.itemCount) {
+            val item = clipData.getItemAt(i) ?: continue
+            val text = item.text?.toString()
+                ?: if (context != null) {
+                    try {
+                        item.coerceToText(context)?.toString()
+                    } catch (_: Throwable) {
+                        null
+                    }
+                } else null
+                ?: item.htmlText
+                ?: item.uri?.toString()
+                ?: item.intent?.toUri(0)
+            if (!text.isNullOrEmpty()) {
+                if (sb.isNotEmpty()) sb.append("\n")
+                val remaining = MAX_CAPTURED_TEXT_CHARS - sb.length
+                if (remaining <= 0) break
+                if (text.length > remaining) {
+                    sb.append(text, 0, remaining)
+                    sb.append(TRUNCATION_MARKER)
+                    break
+                }
+                sb.append(text)
+            }
+        }
+        return sb.toString().ifEmpty { null }
     }
 
     /**
@@ -175,7 +215,11 @@ internal object ClipboardReader {
         var c: Class<*>? = service.javaClass
         while (c != null && c != Any::class.java) {
             for (field in c.declaredFields) {
-                if (field.name.startsWith("this$0") || field.name == "mService") {
+                if (field.name.startsWith("this$0") ||
+                    field.name == "mService" ||
+                    field.name == "mClipboardService" ||
+                    field.type.name.endsWith("ClipboardService")
+                ) {
                     try {
                         field.isAccessible = true
                         val outer = field.get(service)

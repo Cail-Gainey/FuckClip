@@ -9,7 +9,7 @@ android {
     namespace = "app.fuckclip"
     compileSdk = 35
 
-    val defaultVersionName = (project.findProperty("appVersionName") as? String) ?: "1.0.0"
+    val defaultVersionName = (project.findProperty("appVersionName") as? String) ?: "1.0.1"
     val defaultVersionCode = run {
         val clean = defaultVersionName.trim().removePrefix("v").removePrefix("V")
         val parts = clean.split(".").mapNotNull { it.takeWhile { c -> c.isDigit() }.toIntOrNull() }

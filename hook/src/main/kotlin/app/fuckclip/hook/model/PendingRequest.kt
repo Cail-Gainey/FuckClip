@@ -3,6 +3,7 @@ package app.fuckclip.hook.model
 import android.content.ClipData
 import android.os.Binder
 import android.util.Log
+import app.fuckclip.hook.ClipboardAccessScope
 import io.github.libxposed.api.XposedInterface
 import java.lang.reflect.Method
 import java.util.concurrent.CountDownLatch
@@ -79,7 +80,9 @@ internal class Replay(
         val id = Binder.clearCallingIdentity()
         try {
             Binder.restoreCallingIdentity(identity)
-            invoker.invoke(service, *args)
+            ClipboardAccessScope.withUserGrant {
+                invoker.invoke(service, *args)
+            }
         } catch (t: Throwable) {
             Log.e("Replay", "Failed replaying write transaction", t)
         } finally {

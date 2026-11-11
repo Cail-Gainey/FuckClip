@@ -7,10 +7,25 @@
 
 ---
 
-## [Unreleased]
+## [1.0.1] - 2026-11-11
+
+### 新增 (Added)
+- **小米 MIUI / 澎湃 HyperOS 专有剪贴板服务拦截 (`MiuiClipboardHook`)**：
+  - 挂钩 `com.android.server.clipboard.ClipboardServiceStubImpl`、`ClipboardServiceStub` 与 `ClipboardServiceInjector`，支持 `userOperate` 等厂商扩展方法签名与专有读取入口。
+  - 协调 `clipboardAccessResult`、`waitUserChoice`、`modifyClipDataIfNeed`、`checkProviderWakePathForClipboard` 与 `clipboardAccessAllowed` 内部权限闸门，拦截被拒绝应用的唤醒与读取，同时消除用户放行后的安全中心重复弹窗与第三方输入法误杀。
+- **Vivo OriginOS / Funtouch OS 专有剪贴板服务拦截 (`OriginOsClipboardHook`)**：
+  - 挂钩 `vivo-services.jar` 中的 `VivoClipboardServiceImpl`、`VivoSupClipboardServiceImpl` 及 `mVivoClipboardService` 委托实例，并探测 Vivo 专有剪贴板 Binder 服务。
+  - 协调 `checkPolicyPerm`、`checkPrivacyAccessAllowed`、`checkClipboardAccess` 与 `showClipboardPrivacy` 权限与隐私弹窗闸门。
+- **OPPO ColorOS / 一加 OxygenOS / Realme UI 专有剪贴板服务拦截 (`ColorOsClipboardHook`)**：
+  - 挂钩 `oplus-services.jar` 中的 `ClipboardServiceExtImpl` 及 `mClipboardServiceExt` 扩展委托实例，并探测 Oplus 专有剪贴板 Binder 服务。
+  - 协调 `adjustClipData`、`hookClipboardAccessAllowed`、`isAllowedToReadClipboard` 与 `showAccessNotification` 智能防窥及通知闸门。
+- **剪贴板元数据防探测 (`ClipboardMetadataHook`)**：对规则设为「拒绝」的应用隐藏 `hasPrimaryClip`、`hasClipboardText` 与 `getPrimaryClipDescription` 探测结果。
+- **重载委托防重入作用域 (`ClipboardAccessScope`)**：确保多参数重载相互调用时单次 IPC 仅执行一次规则判定与弹窗询问。
+
+### 变更 (Changed)
+- **Hook 模块解耦与拆分**：引入 `ClipboardHookContext` 与 `ClipboardSystemHook` 契约，并将 `VendorClassDiscovery`、`VendorGateSupport` 与各厂商拦截器拆分为独立子包文件。
 
 ### 计划中
-- 进一步优化厂商定制 ROM（如 HyperOS、OriginOS、ColorOS）专有剪贴板扩展服务的适配。
 - 引入更灵活的规则标签与分组搜索能力。
 
 ---
@@ -70,6 +85,17 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+### [1.0.1] - 2026-11-11
+
+#### Added
+- **Xiaomi MIUI / HyperOS Support (`MiuiClipboardHook`)**: Hooks `ClipboardServiceStubImpl`, `ClipboardServiceStub`, `ClipboardServiceInjector`, vendor read overloads, and internal access/wake-path/choice gates.
+- **Vivo OriginOS / Funtouch OS Support (`OriginOsClipboardHook`)**: Hooks `VivoClipboardServiceImpl`, `VivoSupClipboardServiceImpl`, `mVivoClipboardService` delegates, Vivo Binder services, and privacy gates.
+- **OPPO ColorOS / OnePlus OxygenOS / Realme UI Support (`ColorOsClipboardHook`)**: Hooks `ClipboardServiceExtImpl`, `mClipboardServiceExt` delegates, Oplus Binder services, `adjustClipData`, and access/notification gates.
+- **Metadata Guard & Re-entrancy Scope**: Hides clipboard existence/metadata probes for denied packages via `ClipboardMetadataHook` and prevents duplicate prompting via `ClipboardAccessScope`.
+
+#### Changed
+- Decoupled `:hook` system installers and vendor gate interceptors through `ClipboardHookContext`, `ClipboardSystemHook`, `VendorClassDiscovery`, and `VendorGateSupport`.
 
 ### [1.0.0] - 2026-11-03
 

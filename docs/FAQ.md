@@ -59,9 +59,12 @@ FuckClip 内置了滑动时间窗口限流器：
 
 ## 4. 定制 ROM 与设备兼容性
 
-### Q: 三星 One UI 系统的剪贴板拦截是否支持？
+### Q: 那些系统的剪贴板拦截支持拦截？
 **A**:
-支持。三星 One UI 具有一套专有的侧屏剪贴板面板与服务（`SemClipboardService` / `ClipService`）。FuckClip 特别编写了针对三星专有服务的反射代理挂钩引擎，能够同等拦截三星系统下的剪贴板读取行为。
+- MIUI 与澎湃 HyperOS 在 `miui-services.jar` / `services.jar` 中通过 `ClipboardServiceStubImpl` 扩展了剪贴板服务（包含带 `boolean userOperate` 参数的重载、跨进程唤醒路径 `checkProviderWakePathForClipboard` 及内部安全校验闸门）。FuckClip 内置了专门的 `MiuiClipboardHook` 引擎与防重入作用域，不仅完整拦截 MIUI / HyperOS 下的各类剪贴板读写与存在性探测，还能避免系统安全中心重复弹出二次授权框或误拦截用户已在 FuckClip 中放行的第三方输入法。
+- Vivo 系统通过 `vivo-services.jar` 中的 `VivoClipboardServiceImpl`、`VivoSupClipboardServiceImpl` 以及 `ClipboardService` 内部的 `mVivoClipboardService` 委托处理超级剪贴板、跨屏协同与隐私权限检查。FuckClip 内置了 `OriginOsClipboardHook` 引擎，自动定位并挂钩 Vivo 剪贴板实现类及 `checkPolicyPerm`、`checkPrivacyAccessAllowed`、`showClipboardPrivacy` 校验闸门。
+- Oplus 系固件通过 `oplus-services.jar` 中的 `ClipboardServiceExtImpl` 以及 `ClipboardService` 内部的 `mClipboardServiceExt` 委托实现智能防窥与剪贴板扩展。FuckClip 内置了 `ColorOsClipboardHook` 引擎，自动定位并挂钩 Oplus 扩展实现类及 `adjustClipData`、`hookClipboardAccessAllowed`、`showAccessNotification` 闸门。
+- 三星 One UI 具有一套专有的侧屏剪贴板面板与服务（`SemClipboardService` / `ClipService`）。FuckClip 特别编写了针对三星专有服务的反射代理挂钩引擎，能够同等拦截三星系统下的剪贴板读取行为。
 
 ### Q: 支持哪些 Android 系统版本？
 **A**:
@@ -103,6 +106,12 @@ FuckClip 基于 LibXposed API 102 现代规范构建，全面支持 **Android 10
   - Certain aggressive apps query the clipboard continuously. The built-in sliding-window limiter blocks frequent polling, saving battery and preventing notification spam.
 
 #### 4. Custom ROMs
+- **Does it support Xiaomi MIUI and HyperOS?**
+  - Yes. FuckClip includes `MiuiClipboardHook` targeting Xiaomi's `ClipboardServiceStubImpl`, `userOperate` method overloads, provider wake-path checks, and internal privacy gates.
+- **Does it support Vivo OriginOS and Funtouch OS?**
+  - Yes. FuckClip includes `OriginOsClipboardHook` targeting `VivoClipboardServiceImpl`, `VivoSupClipboardServiceImpl`, `mVivoClipboardService` delegates, and Vivo privacy policy gates (`checkPolicyPerm`, `checkPrivacyAccessAllowed`, `showClipboardPrivacy`).
+- **Does it support OPPO ColorOS, OnePlus OxygenOS, and Realme UI?**
+  - Yes. FuckClip includes `ColorOsClipboardHook` targeting `ClipboardServiceExtImpl`, `mClipboardServiceExt` delegates, and Oplus privacy/anti-peeping gates (`adjustClipData`, `hookClipboardAccessAllowed`, `showAccessNotification`).
 - **Does it support Samsung One UI?**
   - Yes. FuckClip includes a dedicated hook for Samsung's proprietary `SemClipboardService` / `ClipService`.
 - **Supported Android Versions**: Android 10 to Android 15 (API 29-35).

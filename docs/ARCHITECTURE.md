@@ -14,12 +14,18 @@ FuckClip 采用高内聚、低耦合的多模块组件化设计：
 flowchart TD
     subgraph SystemServer["system_server 进程 (Android Framework)"]
         AOSP["原生 ClipboardService"]
+        MIUI["小米 MIUI / HyperOS ClipboardServiceStubImpl"]
+        ORIGIN["Vivo OriginOS VivoClipboardServiceImpl"]
+        COLOR["OPPO ColorOS ClipboardServiceExtImpl"]
         SAMSUNG["三星 SemClipboardService"]
         HOOK[":hook 模块 (LibXposed API 102)"]
         LIMITER["毒瘤应用限流引擎 (RogueAppLimiter)"]
         PROMPT["异步防死锁弹窗 (ClipboardPromptManager)"]
         
         AOSP --> HOOK
+        MIUI --> HOOK
+        ORIGIN --> HOOK
+        COLOR --> HOOK
         SAMSUNG --> HOOK
         HOOK --> LIMITER
         LIMITER --> PROMPT
@@ -64,7 +70,10 @@ flowchart TD
 ### 2. `:hook` 模块（系统层挂钩实现）
 - **定位**：工作在 Android 核心系统进程 `system_server` 中，基于 LibXposed API 102 现代标准。
 - **挂钩拦截策略**：
-  - **原生 AOSP 服务**：挂钩 `com.android.server.clipboard.ClipboardService` 的 `getPrimaryClip`、`setPrimaryClip` 等核心 Binder 接口。
+  - **原生 AOSP 服务**：挂钩 `com.android.server.clipboard.ClipboardService` 的 `getPrimaryClip`、`setPrimaryClip` 及 `hasPrimaryClip` / `hasClipboardText` / `getPrimaryClipDescription` 等核心 Binder 接口。
+  - **小米 MIUI / 澎湃 HyperOS 服务**：识别并挂钩 `miui-services.jar` / `services.jar` 中的 `ClipboardServiceStubImpl`、`ClipboardServiceStub` 与 `ClipboardServiceInjector`，兼容带 `boolean userOperate` 等尾参的定制重载，并协调 `clipboardAccessResult`、`waitUserChoice`、`modifyClipDataIfNeed`、`checkProviderWakePathForClipboard` 与 `clipboardAccessAllowed` 内部权限闸门，借助线程级作用域 `ClipboardAccessScope` 防止重载相互委托引发重复弹窗或二次拦截。
+  - **Vivo OriginOS / Funtouch OS 服务**：识别并挂钩 `vivo-services.jar` / `services.jar` 中的 `VivoClipboardServiceImpl`、`VivoSupClipboardServiceImpl` 及 `ClipboardService.mVivoClipboardService` 委托实例，协调 `checkPolicyPerm`、`checkPrivacyAccessAllowed`、`checkClipboardAccess` 与 `showClipboardPrivacy` 权限与弹窗闸门。
+  - **OPPO ColorOS / 一加 OxygenOS / Realme UI 服务**：识别并挂钩 `oplus-services.jar` / `services.jar` 中的 `ClipboardServiceExtImpl` 及 `ClipboardService.mClipboardServiceExt` 扩展委托实例，协调 `adjustClipData`、`hookClipboardAccessAllowed`、`isAllowedToReadClipboard` 与 `showAccessNotification` 智能防窥及通知闸门。
   - **三星定制服务**：挂钩 `com.samsung.android.content.clipboard.SemClipboardService` 等专有接口。
 - **内部安全读取与反射代理**：
   - 为在弹出授权对话框前向用户呈现剪贴板预览内容，Hook 层直接通过底层内部变量或反射获取数据，避免重入再次触发外部审计监听器。
@@ -94,5 +103,5 @@ flowchart TD
 FuckClip is structured into three distinct modules to ensure separation of concerns and maintainability:
 
 1. **`:core`**: Pure domain models and algorithm components. Contains `WhitelistRule`, `HookLog`, `RogueAppLimiter`, and shared constants. Does not depend on Android UI or Xposed libraries.
-2. **`:hook`**: LibXposed API 102 implementation injected into `system_server`. Intercepts clipboard read/write events across AOSP and Samsung ClipService instances, parses data via internal reflection proxies, and dispatches UI requests via an asynchronous deadlock-free queue.
+2. **`:hook`**: LibXposed API 102 implementation injected into `system_server`. Intercepts clipboard read/write and metadata events across AOSP, Xiaomi MIUI / HyperOS (`ClipboardServiceStubImpl`), Vivo OriginOS (`VivoClipboardServiceImpl`), OPPO ColorOS (`ClipboardServiceExtImpl`), and Samsung ClipService instances, parses data via internal reflection proxies, and dispatches UI requests via an asynchronous deadlock-free queue.
 3. **`:app`**: Modern Jetpack Compose & Material 3 application. Powered by Koin dependency injection, StateFlow state machines, dynamic theming palettes, and robust JSON backup/restore tools.

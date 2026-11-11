@@ -21,7 +21,7 @@ class FuckClipModule : XposedModule() {
     override fun onSystemServerStarting(param: XposedModuleInterface.SystemServerStartingParam) {
         super.onSystemServerStarting(param)
         log(Log.INFO, TAG, "System server starting, installing hooks")
-        clipboardHook.install()
+        clipboardHook.install(param.classLoader)
     }
 
     override fun onHotReloading(param: XposedModuleInterface.HotReloadingParam): Boolean {

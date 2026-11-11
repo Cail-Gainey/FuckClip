@@ -12,19 +12,19 @@ import io.github.libxposed.api.XposedInterface
  */
 internal class SamsungClipboardHook(
     /**
-     * Target clipboard hook coordinator managing method interception.
+     * Runtime hook context coordinating method interception and service discovery.
      *
-     * 管理方法拦截的剪贴板钩子协调器。
+     * 协调方法拦截与服务发现的运行时钩子上下文。
      */
-    private val hook: ClipboardHook
-) {
+    private val context: ClipboardHookContext
+) : ClipboardSystemHook {
     /**
-     * Hooks IClipboard.Stub.onTransact to capture the underlying service instance during any clipboard IPC transaction.
+     * Hooks IClipboard.Stub.onTransact to capture underlying clipboard service instances, ignoring [classLoader].
      *
-     * 挂钩 IClipboard.Stub.onTransact 以在任何剪贴板 IPC 事务期间捕获底层服务实例。
+     * 挂钩 IClipboard.Stub.onTransact 兜底入口（忽略 [classLoader]）以捕获底层剪贴板服务实例。
      */
     @SuppressLint("PrivateApi")
-    fun install() {
+    override fun install(classLoader: ClassLoader?) {
         try {
             val stubClass = Class.forName("android.content.IClipboard\$Stub")
             val onTransactMethod = stubClass.getDeclaredMethod(
@@ -36,19 +36,20 @@ internal class SamsungClipboardHook(
             )
             onTransactMethod.isAccessible = true
 
-            hook.module.hook(onTransactMethod)
+            context.module.hook(onTransactMethod)
                 .setPriority(XposedInterface.PRIORITY_DEFAULT)
                 .setExceptionMode(XposedInterface.ExceptionMode.PROTECTIVE)
                 .intercept { chain ->
                     chain.thisObject?.let { service ->
-                        hook.hookClipboardService(service.javaClass)
+                        context.hookClipboardService(service.javaClass)
+                        context.onServiceInstanceDiscovered(service)
                     }
                     chain.proceed()
                 }
 
-            hook.module.log(Log.INFO, TAG, "Hooked IClipboard.Stub.onTransact fallback")
+            context.module.log(Log.INFO, TAG, "Hooked IClipboard.Stub.onTransact fallback")
         } catch (t: Throwable) {
-            hook.module.log(Log.WARN, TAG, "Failed to hook IClipboard.Stub.onTransact fallback", t)
+            context.module.log(Log.WARN, TAG, "Failed to hook IClipboard.Stub.onTransact fallback", t)
         }
     }
 

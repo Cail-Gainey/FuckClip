@@ -13,18 +13,18 @@ import android.util.Log
  */
 internal class AndroidClipboardHook(
     /**
-     * Target clipboard hook coordinator managing method interception.
+     * Runtime hook context coordinating method interception and service discovery.
      *
-     * 管理方法拦截的剪贴板钩子协调器。
+     * 协调方法拦截与服务发现的运行时钩子上下文。
      */
-    private val hook: ClipboardHook
-) {
+    private val context: ClipboardHookContext
+) : ClipboardSystemHook {
     /**
-     * Polls ServiceManager until the clipboard service is available and installs hooks.
+     * Polls ServiceManager on the main looper until the clipboard service is ready and installs hooks, ignoring [classLoader].
      *
-     * 轮询 ServiceManager 直至剪贴板服务就绪并安装钩子。
+     * 通过主线程 Looper 轮询 ServiceManager 直至剪贴板服务就绪并安装钩子（忽略 [classLoader]）。
      */
-    fun install() {
+    override fun install(classLoader: ClassLoader?) {
         try {
             val serviceManagerClass = Class.forName("android.os.ServiceManager")
             val getServiceMethod = serviceManagerClass.getDeclaredMethod("getService", String::class.java)
@@ -39,24 +39,25 @@ internal class AndroidClipboardHook(
                     try {
                         val binder = getServiceMethod.invoke(null, Context.CLIPBOARD_SERVICE) as? IBinder
                         if (binder != null) {
-                            hook.module.log(Log.INFO, TAG, "Clipboard service located: ${binder.javaClass.name}")
-                            hook.hookClipboardService(binder.javaClass)
+                            context.module.log(Log.INFO, TAG, "Clipboard service located: ${binder.javaClass.name}")
+                            context.hookClipboardService(binder.javaClass)
+                            context.onServiceInstanceDiscovered(binder)
                             return
                         }
                     } catch (t: Throwable) {
-                        hook.module.log(Log.WARN, TAG, "Failed during clipboard service lookup", t)
+                        context.module.log(Log.WARN, TAG, "Failed during clipboard service lookup", t)
                     }
 
                     if (attempts < MAX_ATTEMPTS) {
                         handler.postDelayed(this, POLL_INTERVAL_MS)
                     } else {
-                        hook.module.log(Log.ERROR, TAG, "Clipboard service lookup timed out after $attempts attempts")
+                        context.module.log(Log.ERROR, TAG, "Clipboard service lookup timed out after $attempts attempts")
                     }
                 }
             }
             handler.post(pollRunnable)
         } catch (t: Throwable) {
-            hook.module.log(Log.ERROR, TAG, "Failed to initialize generic clipboard hook", t)
+            context.module.log(Log.ERROR, TAG, "Failed to initialize generic clipboard hook", t)
         }
     }
 
