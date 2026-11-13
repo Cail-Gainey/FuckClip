@@ -250,4 +250,16 @@ jobs:
             output/*.apk
             output/sha256sums.txt
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.LSP_REPO_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Sync to LSPosed Official Repo
+        if: steps.version.outputs.is_prerelease != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.LSP_REPO_TOKEN }}
+        run: |
+          if [ -n "$GH_TOKEN" ]; then
+            chmod +x tools/sync-to-lsposed-repo.sh
+            ./tools/sync-to-lsposed-repo.sh sync "${{ steps.version.outputs.tag_name }}" "output"
+          else
+            echo "[INFO] 未配置 LSP_REPO_TOKEN，跳过自动同步至 LSPosed 官方仓库。"
+          fi

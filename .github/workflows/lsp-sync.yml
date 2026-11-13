@@ -1,0 +1,74 @@
+name: LSPosed Repo Sync
+
+# 当 GitHub 仓库发布 Release 或删除 Release 时，自动同步至 LSPosed 官方模块仓库。
+# 同时支持在 Actions 页面手动运行 (workflow_dispatch)。
+
+on:
+  release:
+    types: [published, deleted]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: '同步操作类型'
+        required: true
+        default: 'sync'
+        type: choice
+        options:
+          - sync
+          - delete
+          - metadata
+      tag_name:
+        description: '目标版本 Tag (如 v1.0.1，留空则默认最新 Release)'
+        required: false
+        type: string
+
+concurrency:
+  group: lsp-sync-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync to LSPosed Repo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Check LSP_REPO_TOKEN Secret
+        run: |
+          if [ -z "${{ secrets.LSP_REPO_TOKEN }}" ]; then
+            echo "::error::未检测到 Repository Secret 'LSP_REPO_TOKEN'，请先在仓库 Settings -> Secrets 中配置具有目标模块仓库访问权限的 Personal Access Token。"
+            exit 1
+          fi
+
+      - name: Sync Release (Published)
+        if: (github.event_name == 'release' && github.event.action == 'published') || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'sync')
+        env:
+          GH_TOKEN: ${{ secrets.LSP_REPO_TOKEN }}
+        run: |
+          TAG="${{ github.event.release.tag_name || github.event.inputs.tag_name }}"
+          chmod +x tools/sync-to-lsposed-repo.sh
+          ./tools/sync-to-lsposed-repo.sh sync "$TAG"
+
+      - name: Delete Release (Deleted)
+        if: (github.event_name == 'release' && github.event.action == 'deleted') || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'delete')
+        env:
+          GH_TOKEN: ${{ secrets.LSP_REPO_TOKEN }}
+        run: |
+          TAG="${{ github.event.release.tag_name || github.event.inputs.tag_name }}"
+          if [ -z "$TAG" ]; then
+            echo "::error::删除操作缺少有效的 Tag 名称。"
+            exit 1
+          fi
+          chmod +x tools/sync-to-lsposed-repo.sh
+          ./tools/sync-to-lsposed-repo.sh delete "$TAG"
+
+      - name: Sync Metadata Only
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'metadata'
+        env:
+          GH_TOKEN: ${{ secrets.LSP_REPO_TOKEN }}
+        run: |
+          chmod +x tools/sync-to-lsposed-repo.sh
+          ./tools/sync-to-lsposed-repo.sh metadata
