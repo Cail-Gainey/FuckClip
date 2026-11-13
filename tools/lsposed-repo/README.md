@@ -10,7 +10,7 @@
 
 FuckClip 是一款基于 Kotlin 2.0、Jetpack Compose、Material 3 与 [LibXposed](https://github.com/libxposed)（API 102）构建的剪贴板隐私防护模块。
 
-模块直接在 Android 系统服务级进程（`system_server`）中对系统剪贴板服务（`IClipboard`，包含原生 Android 与三星专有剪贴板服务）的 `setPrimaryClip()` 与 `getPrimaryClip()` 进行动态代理与拦截，帮助用户彻底杜绝各类应用未经授权静默扫描、窃取或污染剪贴板的行为。
+模块直接在 Android 系统服务级进程（`system_server`）中对系统剪贴板服务（`IClipboard`，包含原生 Android、小米 MIUI / HyperOS、vivo OriginOS、OPPO ColorOS 与三星专有剪贴板服务）的 `setPrimaryClip()` 与 `getPrimaryClip()` 进行动态代理与拦截，帮助用户彻底杜绝各类应用未经授权静默扫描、窃取或污染剪贴板的行为。
 
 ---
 
@@ -29,7 +29,7 @@ FuckClip 是一款基于 Kotlin 2.0、Jetpack Compose、Material 3 与 [LibXpose
 
 - **Xposed 作用域**：`android`（系统框架 / System Framework，即 `system_server`）
 - **推荐框架**：LSPosed / LSPosed_mod / Vector 等现代 API 102 兼容框架
-- **系统要求**：Android 10 至 Android 15（API 29+），全面兼容 AOSP 与三星 One UI
+- **系统要求**：Android 10 至 Android 15（API 29+），全面兼容 AOSP、MIUI / HyperOS、OriginOS、ColorOS 与三星 One UI
 
 ---
 
